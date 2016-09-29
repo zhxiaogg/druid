@@ -106,9 +106,13 @@ public class SelectQueryEngine
 
             final Map<String, DimensionSelector> dimSelectors = Maps.newHashMap();
             for (DimensionSpec dim : dims) {
+              final String dimensionName = dim.getOutputName();
+              if (dimensionName.equalsIgnoreCase(EventHolder.timestampKey)) {
+                continue;
+              }
               final DimensionSelector dimSelector = cursor.makeDimensionSelector(dim);
-              dimSelectors.put(dim.getOutputName(), dimSelector);
-              builder.addDimension(dim.getOutputName());
+              dimSelectors.put(dimensionName, dimSelector);
+              builder.addDimension(dimensionName);
             }
 
             final Map<String, ObjectColumnSelector> metSelectors = Maps.newHashMap();
